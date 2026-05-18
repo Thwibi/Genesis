@@ -1,0 +1,5 @@
+# Deny unsafe code in all crates except those explicitly requiring it for crypto
+[target.'cfg(not(any(target_arch = "x86_64", target_arch = "aarch64")))']
+# No special restrictions per-platform
+
+[build]
