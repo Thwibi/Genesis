@@ -28,7 +28,7 @@ impl ShiftService {
         name: &str,
         start: chrono::DateTime<Utc>,
         end: chrono::DateTime<Utc>,
-        created_by: Uuid,
+        _created_by: Uuid,
     ) -> Result<Shift, DomainError> {
         let conn = self.db_pool.connection().await
             .map_err(|e| DomainError::DatabaseError(e.to_string()))?;

@@ -3,7 +3,7 @@ use tauri::State;
 use uuid::Uuid;
 
 use crate::commands::CommandError;
-use crate::domain::services::monitoring_service::{AlertSeverity, SecurityAlert};
+use crate::domain::services::monitoring_service::SecurityAlert;
 use crate::AppState;
 
 #[derive(Debug, Serialize)]

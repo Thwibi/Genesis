@@ -36,6 +36,15 @@ The audit log uses a **SHA-256 hash chain**:
 - Each event's `integrity_hash` covers all event fields + the previous event's hash.
 - Tampering with any event breaks the chain and is detectable.
 - Audit writes occur **before** clipboard operations (fail-closed on write failure).
+- The `audit_events` table is append-only, enforced by SQL triggers that reject `UPDATE`/`DELETE`.
+
+Platform lifecycle changes are audited (`PlatformCreated`, `PlatformUpdated`, `PlatformDeleted`),
+attributed to the initiating session. As with clipboard operations, platform writes fail closed:
+if the audit write fails, the operation returns `AuditWriteFailed`.
+
+Constant-time secret comparison uses the `subtle` crate (`subtle::ConstantTimeEq`)
+rather than `ring::constant_time`, whose verification helper is deprecated and
+documents no side-channel guarantees.
 
 ### Clipboard Security
 

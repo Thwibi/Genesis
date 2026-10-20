@@ -94,7 +94,7 @@ impl SecretService {
         let conn = self.db_pool.connection().await
             .map_err(|e| DomainError::DatabaseError(e.to_string()))?;
 
-        let session = SessionRepo::find_by_id(&*conn, session_id)
+        let _session = SessionRepo::find_by_id(&*conn, session_id)
             .map_err(|_| DomainError::SessionNotFound(session_id.to_string()))?;
 
         let encrypted = Vault::encrypt(self.vault_key.as_ref(), new_raw_seed)
@@ -118,7 +118,7 @@ impl SecretService {
         let conn = self.db_pool.connection().await
             .map_err(|e| DomainError::DatabaseError(e.to_string()))?;
 
-        let session = SessionRepo::find_by_id(&*conn, session_id)
+        let _session = SessionRepo::find_by_id(&*conn, session_id)
             .map_err(|_| DomainError::SessionNotFound(session_id.to_string()))?;
 
         SecretRepo::archive(&*conn, platform_id, Utc::now())

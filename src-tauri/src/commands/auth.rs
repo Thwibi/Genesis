@@ -1,11 +1,10 @@
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use tauri::State;
 use uuid::Uuid;
 
 use crate::commands::CommandError;
-use crate::domain::entities::session::{Session, WorkstationInfo};
-use crate::domain::errors::DomainError;
+use crate::domain::entities::session::Session;
 use crate::session::workstation;
 use crate::AppState;
 

@@ -6,7 +6,7 @@ import { usePlatformStore } from "../stores/platformStore";
 export default function OtpViewPage() {
   const { platformId } = useParams<{ platformId: string }>();
   const { session } = useAuthStore();
-  const { platforms, selectedOtp, clipboardCountdown, clipboardActive, generateOtp, copyOtp, clearOtp } = usePlatformStore();
+  const { platforms, selectedOtp, clipboardCountdown, clipboardActive, generateOtp, copyOtp } = usePlatformStore();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);

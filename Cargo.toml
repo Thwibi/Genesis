@@ -6,3 +6,10 @@ members = ["src-tauri"]
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "z"
+strip = true

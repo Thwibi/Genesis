@@ -1,7 +1,7 @@
 use std::sync::Arc;
 use chrono::{DateTime, Timelike, Utc};
 use serde_json::json;
-use tracing::{info, warn};
+use tracing::warn;
 use uuid::Uuid;
 
 use crate::domain::errors::DomainError;

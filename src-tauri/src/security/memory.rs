@@ -41,6 +41,6 @@ pub fn zeroize_buffer(buf: &mut Vec<u8>) {
 
 /// Securely compare two byte slices in constant time to prevent timing attacks.
 pub fn constant_time_eq(a: &[u8], b: &[u8]) -> bool {
-    use ring::constant_time::verify_slices_are_equal;
-    verify_slices_are_equal(a, b).is_ok()
+    use subtle::ConstantTimeEq;
+    a.ct_eq(b).into()
 }

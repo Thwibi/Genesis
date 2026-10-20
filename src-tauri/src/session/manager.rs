@@ -1,12 +1,11 @@
 use std::collections::HashMap;
 use std::sync::Arc;
-use chrono::{DateTime, Utc};
+use chrono::Utc;
 use tokio::sync::RwLock;
-use tracing::{info, warn};
+use tracing::info;
 use uuid::Uuid;
 
 use crate::domain::entities::session::Session;
-use crate::domain::errors::DomainError;
 
 pub struct SessionManager {
     active_sessions: Arc<RwLock<HashMap<Uuid, Session>>>,

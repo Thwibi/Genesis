@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import { usePlatformStore } from "../stores/platformStore";
-import { api, PlatformDto } from "../services/api";
+import { api } from "../services/api";
 
 export default function PlatformsPage() {
   const { session } = useAuthStore();

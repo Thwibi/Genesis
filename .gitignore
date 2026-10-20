@@ -33,3 +33,6 @@ Thumbs.db
 
 # Generated permissions schemas
 src-tauri/gen/
+
+# Dev launcher logs
+*.log

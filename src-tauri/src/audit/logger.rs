@@ -1,6 +1,4 @@
 use std::sync::Arc;
-use chrono::Utc;
-use tracing::{error, warn};
 
 use crate::domain::entities::audit_event::AuditEvent;
 use crate::audit::integrity::HashChain;

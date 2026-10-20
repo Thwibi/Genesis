@@ -1,11 +1,11 @@
 use std::sync::Arc;
 use chrono::Utc;
 use tokio::sync::RwLock;
-use tracing::{info, warn, error};
+use tracing::{info, warn};
 use uuid::Uuid;
 
 use crate::domain::entities::session::{IntegrityState, Session, WorkstationInfo};
-use crate::domain::entities::user::{AccountStatus, User, UserRole};
+use crate::domain::entities::user::AccountStatus;
 use crate::domain::errors::DomainError;
 use crate::audit::events::{AuditEventBuilder, AuditEventType};
 use crate::audit::logger::AuditLogger;

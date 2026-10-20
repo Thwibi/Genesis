@@ -1,5 +1,4 @@
 use chrono::Utc;
-use serde::Serialize;
 use uuid::Uuid;
 
 use crate::domain::entities::audit_event::AuditEvent;
@@ -18,6 +17,9 @@ pub enum AuditEventType {
     FailedAccessAttempt,
     ClipboardCleared,
     ClipboardTimeout,
+    PlatformCreated,
+    PlatformUpdated,
+    PlatformDeleted,
 }
 
 impl AuditEventType {
@@ -35,6 +37,9 @@ impl AuditEventType {
             AuditEventType::FailedAccessAttempt => "FAILED_ACCESS_ATTEMPT",
             AuditEventType::ClipboardCleared => "CLIPBOARD_CLEARED",
             AuditEventType::ClipboardTimeout => "CLIPBOARD_TIMEOUT",
+            AuditEventType::PlatformCreated => "PLATFORM_CREATED",
+            AuditEventType::PlatformUpdated => "PLATFORM_UPDATED",
+            AuditEventType::PlatformDeleted => "PLATFORM_DELETED",
         }
     }
 
@@ -52,6 +57,9 @@ impl AuditEventType {
             AuditEventType::FailedAccessAttempt => "WARN",
             AuditEventType::ClipboardCleared => "INFO",
             AuditEventType::ClipboardTimeout => "INFO",
+            AuditEventType::PlatformCreated => "INFO",
+            AuditEventType::PlatformUpdated => "INFO",
+            AuditEventType::PlatformDeleted => "WARN",
         }
     }
 }

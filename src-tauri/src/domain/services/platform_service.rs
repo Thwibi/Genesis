@@ -60,6 +60,23 @@ impl PlatformService {
         PlatformRepo::create(&*conn, &platform)
             .map_err(|e| DomainError::DatabaseError(e.to_string()))?;
 
+        // conn dropped before audit write to avoid holding the pool connection
+        drop(conn);
+
+        let event = AuditEventBuilder::new(AuditEventType::PlatformCreated)
+            .with_session_id(session_id)
+            .with_platform_id(platform.id)
+            .with_metadata(serde_json::json!({
+                "name": platform.name,
+                "platform_type": platform.platform_type,
+                "environment": platform.environment,
+                "criticality_level": format!("{:?}", platform.criticality_level),
+            }))
+            .build();
+
+        self.audit_logger.write(event).await
+            .map_err(|e| DomainError::AuditWriteFailed(e.to_string()))?;
+
         info!(target: "platform", platform_id = %platform.id, name = %name, "Platform created");
 
         Ok(platform)
@@ -95,6 +112,22 @@ impl PlatformService {
         PlatformRepo::update(&*conn, &platform)
             .map_err(|e| DomainError::DatabaseError(e.to_string()))?;
 
+        drop(conn);
+
+        let event = AuditEventBuilder::new(AuditEventType::PlatformUpdated)
+            .with_session_id(session_id)
+            .with_platform_id(platform.id)
+            .with_metadata(serde_json::json!({
+                "name": platform.name,
+                "platform_type": platform.platform_type,
+                "environment": platform.environment,
+                "criticality_level": format!("{:?}", platform.criticality_level),
+            }))
+            .build();
+
+        self.audit_logger.write(event).await
+            .map_err(|e| DomainError::AuditWriteFailed(e.to_string()))?;
+
         info!(target: "platform", platform_id = %platform_id, "Platform updated");
 
         Ok(platform)
@@ -104,8 +137,26 @@ impl PlatformService {
         let conn = self.db_pool.connection().await
             .map_err(|e| DomainError::DatabaseError(e.to_string()))?;
 
+        // Capture identity before deletion for audit metadata.
+        let platform_name = PlatformRepo::find_by_id(&*conn, platform_id)
+            .map(|p| p.name)
+            .unwrap_or_else(|_| platform_id.to_string());
+
         PlatformRepo::delete(&*conn, platform_id)
             .map_err(|e| DomainError::DatabaseError(e.to_string()))?;
+
+        drop(conn);
+
+        let event = AuditEventBuilder::new(AuditEventType::PlatformDeleted)
+            .with_session_id(session_id)
+            .with_platform_id(platform_id)
+            .with_metadata(serde_json::json!({
+                "name": platform_name,
+            }))
+            .build();
+
+        self.audit_logger.write(event).await
+            .map_err(|e| DomainError::AuditWriteFailed(e.to_string()))?;
 
         info!(target: "platform", platform_id = %platform_id, "Platform deleted");
 
